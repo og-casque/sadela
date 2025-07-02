@@ -1,0 +1,9 @@
+ldap3
+impacket
+rich
+netifaces
+aioquic
+pycryptodome
+colorama
+PyYAML
+msldap

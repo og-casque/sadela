@@ -1,0 +1,4 @@
+neo4j-host: "127.0.0.1"
+neo4j-port: 7687
+neo4j-user: "neo4j"
+neo4j-pass: "casque"

@@ -1,0 +1,100 @@
+FROM debian:12-slim
+
+# installing essentials
+RUN apt update && apt install -y \
+    git jq curl wget vim nano zsh sudo zsh-autosuggestions ruby ruby-dev gnupg \
+    build-essential locales tmux libssl-dev libbz2-dev libreadline-dev \
+    libsqlite3-dev libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev \
+    libffi-dev liblzma-dev make ca-certificates expect \
+    && apt clean
+
+# Installing libs for electron apps to work (bloodhound) according to chati
+RUN apt-get install -y \
+    libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 \
+    libxss1 libxcomposite1 libxcursor1 libxdamage1 libxrandr2 \
+    libasound2 libpangocairo-1.0-0 libgtk-3-0 \
+    libdrm2 libgbm1 libxshmfence1 libgl1-mesa-glx libgl1-mesa-dri
+
+# Installing go
+RUN curl -sSL https://go.dev/dl/go1.24.4.linux-amd64.tar.gz -o /opt/go1.24.4.linux-amd64.tar.gz
+RUN rm -rf /usr/local/go
+RUN tar -C /usr/local -xzf /opt/go1.24.4.linux-amd64.tar.gz
+ENV PATH="${PATH}:/usr/local/go/bin"
+ENV PATH="${PATH}:/root/go/bin"
+
+# Install pyenv
+ENV PYENV_ROOT="/root/.pyenv"
+ENV PATH="$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH"
+
+RUN git clone https://github.com/pyenv/pyenv.git $PYENV_ROOT
+
+# Install Python 3.12.3 via pyenv and make it global
+RUN pyenv install 3.12.3 && pyenv global 3.12.3
+
+# Installing Python3.11.9 for specific tools
+RUN pyenv install 3.11.9
+
+# Ensure pip and pipx are installed for Python 3.12.3
+RUN pip install --upgrade pip && pip install pipx && pipx ensurepath
+
+# configuring locals (chati)
+RUN sed -i 's/^# *en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen && \
+    update-locale LANG=en_US.UTF-8
+
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+ENV PATH="/root/.local/bin:${PATH}"
+
+ENV PATH="/usr/sbin:${PATH}"
+
+# copying conf files
+COPY conf/tmux.conf /root/.tmux.conf
+COPY conf/zshrc /root/.zshrc
+COPY conf/vimrc /etc/vim/vimrc
+COPY conf/zsh_history /root/.zsh_history
+COPY conf/bash_aliases /root/.bash_aliases
+COPY conf/neo4j.yaml /opt/neo4j.yaml
+COPY conf/change_neo4j_pw.exp /opt/change_neo4j_pw.exp
+COPY conf/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# copying installation files to docker
+COPY install/apt.txt /opt/apt.txt
+COPY install/pipx.txt /opt/pipx.txt
+COPY install/pip.txt /opt/pip.txt
+COPY install/gem.txt /opt/gem.txt
+COPY install/go.txt /opt/go.txt
+COPY install/install_tools.sh /opt/install_tools.sh
+COPY install/install_ressources.sh /opt/install_ressources.sh
+
+# copying personal scripts
+COPY scripts/add-gpohound-customqueries.sh /usr/local/bin/add-gpohound-customqueries.sh
+COPY scripts/krb5autoconf.sh /usr/local/bin/krb5autoconf.sh
+
+RUN chmod +x /usr/local/bin/add-gpohound-customqueries.sh
+RUN chmod +x /usr/local/bin/krb5autoconf.sh
+
+# copying web_exploit_scripts
+RUN mkdir -p /web_exploit_scripts
+
+COPY web_exploit_scripts/sqli.py /web_exploit_scripts/sqli.py
+
+# running installation script
+RUN chmod +x /opt/install_tools.sh
+
+RUN chmod +x /opt/install_ressources.sh
+
+RUN bash /opt/install_tools.sh
+RUN bash /opt/install_ressources.sh
+
+COPY conf/nxc.conf /root/.nxc/nxc.conf
+# copying modified version of openssl.conf to enable MD4 encryption
+# this seems to fix most problems 
+COPY conf/openssl.conf /etc/ssl/openssl.cnf
+
+RUN mkdir -p /workspace
+WORKDIR /workspace
+
+# launch with zsh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

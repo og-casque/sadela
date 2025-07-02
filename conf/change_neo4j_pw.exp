@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+
+set timeout 10
+spawn cypher-shell -u neo4j -p neo4j
+expect "Password change required"
+send "casque\r"
+expect "confirm password:"
+send "casque\r"
+expect "neo4j@neo4j>"
+send ":exit\r"
+expect eof

