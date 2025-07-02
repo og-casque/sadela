@@ -36,4 +36,5 @@ rdate
 faketime
 krb5-user
 inetutils-ping
+dnsutils
 tshark

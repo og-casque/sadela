@@ -22,3 +22,4 @@ coercer
 arsenal-cli
 regpol
 git+https://github.com/aniqfakhrul/powerview.py
+git+https://github.com/dirkjanm/adidnsdump#egg=adidnsdump
