@@ -24,3 +24,5 @@ regpol
 git+https://github.com/aniqfakhrul/powerview.py
 git+https://github.com/dirkjanm/adidnsdump#egg=adidnsdump
 semgrep
+acltoolkit-ad
+dploot

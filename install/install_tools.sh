@@ -225,6 +225,12 @@ if [ ! -f /opt/krbrelayx/addspn.py ]; then
     echo "Failed installing krbrelayx"
 fi
 
+echo "Installing ghostspn"
+git clone --depth 1 https://github.com/p0dalirius/GhostSPN.git /opt/ghostspn
+if [ ! -f /opt/ghostspn/GhostSPN.py ]; then
+    echo "Failed installing ghostspn"
+fi
+
 echo "Installing noPac.py"
 git clone --depth 1 https://github.com/Ridter/noPac.git /opt/noPac
 if [ ! -f /opt/noPac/noPac.py ]; then
