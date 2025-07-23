@@ -99,7 +99,7 @@ def main():
 
     parser.add_argument('--debug', action='store_true', default=False, help='Increase verbosity (False by default)')
 
-    parser.add_argument('--dockerfile', default='BuildDir/Dockerfile.debian', help='Path to Dockerfile (debian by default)')
+    parser.add_argument('--dockerfile', default='BuildDir/Dockerfile.debian', help='Path to Dockerfile (debian by BuildDir/Dockerfile.debian)')
 
     parser.add_argument('--name', help='Container name')
     parser.add_argument('--shared-dir', help='Directory to share with container (only on first run, none by default)')
@@ -125,8 +125,6 @@ def main():
     elif args.rm:
         delete_container(container_name=args.name)
 
-    else:
-        print("Didn't understand what you meant")
 
 if __name__ == '__main__':
     main()
