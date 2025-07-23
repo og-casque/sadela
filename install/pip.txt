@@ -7,3 +7,4 @@ pycryptodome
 colorama
 PyYAML
 msldap
+dnslib

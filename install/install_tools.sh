@@ -123,6 +123,9 @@ if [ ! -f /opt/customqueries.json ]; then
     echo "Failed getting customqueries.json"
 fi
 
+#installation de dépendances globales avec pip pour certains binaires *2john
+pip install asn1crypto
+
 #création du venv pour les install via pip
 echo "Creating venv for pip in /opt/tools-env"
 python3 -m venv /opt/tools-env
@@ -174,6 +177,12 @@ if [ -f /opt/sqlmap/sqlmap.py ]; then
     ln -s /opt/sqlmap/sqlmap.py /usr/local/bin/sqlmap
 else
     echo "Failed installing sqlmap"
+fi
+
+echo "Installing dnschef"
+git clone --depth 1 https://github.com/iphelix/dnschef.git /opt/dnschef
+if [ ! -f /opt/dnschef/dnschef.py ]; then
+    echo "Failed installing dnschef"
 fi
 
 echo "Installing responder"

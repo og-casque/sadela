@@ -10,7 +10,10 @@ download() {
   [ -f "$dest" ] || echo "⚠️  ${dest##*/} missing!"
 }
 
-mkdir -p /privilege_escalation/linux /privilege_escalation/windows /wordlists/rules /wordlists/passwords /wordlists/web /wordlists/others /seclists
+mkdir -p /privilege_escalation/linux /privilege_escalation/windows /wordlists/rules /wordlists/passwords /wordlists/web /wordlists/others /seclists /code-analysis
+
+echo "Getting code analysis ressources..."
+git clone --depth 1 https://github.com/semgrep/semgrep-rules.git /code-analysis/semgrep-rules
 
 echo "Getting privilege_escalation ressources..."
 # linpeas

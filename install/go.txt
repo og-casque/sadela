@@ -2,3 +2,4 @@ github.com/ffuf/ffuf/v2@latest
 github.com/OJ/gobuster/v3@latest
 github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
 github.com/sensepost/gowitness@latest
+github.com/nats-io/natscli/nats@latest
