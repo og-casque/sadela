@@ -18,5 +18,18 @@ Delete a container
 
     ./sadela.py --rm --name container_name
 
+List created containers
+
+    ./sadela.py --list
+
+### TODO
+
+- [ ] fix rights for files in shared dir
+- [ ] fix `/etc/hosts` file
+- [ ] fix issues with `bloodhound` crashing unexpectedly
+- [ ] cleaner install for personall wordlists
+- [ ] add a personal ressources option
+- [ ] fix issues with the wrapper (when a container crashes, fix list)
+
 ### Warning
-This project has a lot of issues and some things may not work as expected. 
+This project is in development and some things may not work as expected. Pre installed tools should all work though.
