@@ -32,4 +32,6 @@ List created containers
 - [ ] fix issues with the wrapper (when a container crashes, fix list)
 
 ### Warning
+Only tested on linux.
+
 This project is in development and some things may not work as expected. Pre installed tools should all work though.
