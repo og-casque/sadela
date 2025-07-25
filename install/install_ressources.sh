@@ -58,29 +58,29 @@ download https://raw.githubusercontent.com/tarraschk/richelieu/refs/heads/master
 download https://weakpass.com/download/1987/hashmob.net.small.found.txt.7z /wordlists/passwords/hashmob.net.small.found.txt.7z 
 7z x /wordlists/passwords/hashmob.net.small.found.txt.7z -o/wordlists/passwords/ 1> /dev/null
 rm /wordlists/passwords/hashmob.net.small.found.txt.7z
-download https://raw.githubusercontent.com/tThomasJolyY/Wordlists/refs/heads/main/10-million-password-list-top-10000.txt /wordlists/passwords/10-million-password-list-top-10000.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/milw0rm-dictionary.txt /wordlists/passwords/milw0rm-dictionary.txt
+download https://raw.githubusercontent.com/og-casque/Wordlists/refs/heads/main/10-million-password-list-top-10000.txt /wordlists/passwords/10-million-password-list-top-10000.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/milw0rm-dictionary.txt /wordlists/passwords/milw0rm-dictionary.txt
 
 echo "Getting web wordlists..."
-download https://raw.githubusercontent.com/tThomasJolyY/Wordlists/refs/heads/main/Common-PHP-Filenames.txt /wordlists/web/Common-PHP-Filenames.txt
-download https://raw.githubusercontent.com/tThomasJolyY/Wordlists/refs/heads/main/actions-lowercase.txt /wordlists/web/actions-lowercase.txt
-download https://raw.githubusercontent.com/tThomasJolyY/Wordlists/refs/heads/main/api.txt /wordlists/web/api.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/big.txt /wordlists/web/big.txt
-download https://raw.githubusercontent.com/tThomasJolyY/Wordlists/refs/heads/main/html.txt /wordlists/web/html.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/js-25k.txt /wordlists/web/js-25k.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/js-3k.txt /wordlists/web/js-3k.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/parameters.txt /wordlists/web/parameters.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/subdomains-top1million-110000.txt /wordlists/web/subdomains-top1million-110000.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/subdomains-top1million-20000.txt /wordlists/web/subdomains-top1million-20000.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/subdomains-top1million-5000.txt /wordlists/web/subdomains-top1million-5000.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/subdomains.txt /wordlists/web/subdomains.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/web-common.txt /wordlists/web/web-common.txt
+download https://raw.githubusercontent.com/og-casque/Wordlists/refs/heads/main/Common-PHP-Filenames.txt /wordlists/web/Common-PHP-Filenames.txt
+download https://raw.githubusercontent.com/og-casque/Wordlists/refs/heads/main/actions-lowercase.txt /wordlists/web/actions-lowercase.txt
+download https://raw.githubusercontent.com/og-casque/Wordlists/refs/heads/main/api.txt /wordlists/web/api.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/big.txt /wordlists/web/big.txt
+download https://raw.githubusercontent.com/og-casque/Wordlists/refs/heads/main/html.txt /wordlists/web/html.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/js-25k.txt /wordlists/web/js-25k.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/js-3k.txt /wordlists/web/js-3k.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/parameters.txt /wordlists/web/parameters.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/subdomains-top1million-110000.txt /wordlists/web/subdomains-top1million-110000.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/subdomains-top1million-20000.txt /wordlists/web/subdomains-top1million-20000.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/subdomains-top1million-5000.txt /wordlists/web/subdomains-top1million-5000.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/subdomains.txt /wordlists/web/subdomains.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/web-common.txt /wordlists/web/web-common.txt
 
 echo "Getting other wordlists..."
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/snmp-community-strings.txt /wordlists/others/snmp-community-strings.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/top-usernames-shortlist.txt /wordlists/others/top-usernames-shortlist.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/usernames.txt /wordlists/others/usernames.txt
-download https://github.com/tThomasJolyY/Wordlists/raw/refs/heads/main/xato-net-10-million-usernames-dup.txt /wordlists/others/xato-net-10-million-usernames-dup.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/snmp-community-strings.txt /wordlists/others/snmp-community-strings.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/top-usernames-shortlist.txt /wordlists/others/top-usernames-shortlist.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/usernames.txt /wordlists/others/usernames.txt
+download https://github.com/og-casque/Wordlists/raw/refs/heads/main/xato-net-10-million-usernames-dup.txt /wordlists/others/xato-net-10-million-usernames-dup.txt
 
 # seclists
 echo "Cloning seclists..."
