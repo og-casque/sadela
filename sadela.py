@@ -44,7 +44,7 @@ def run_container(container_name, shared_dir=None):
                 print(f"⚠️ Container '{container_name}' is already running.")
                 print("Use `docker exec -it {}` to access it.".format(container_name))
             else:
-                print(f"❓ Container '{container_name}' is in an unknown state: {containers[container_name]}")
+                print(f"❓ Container '{container_name}' is in an unknown state: {container.status}")
         else:
             print(f"➕ Creating new container '{container_name}'...")
             subprocess.run(["xhost", "+local:docker"], check=False)
