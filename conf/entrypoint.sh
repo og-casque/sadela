@@ -17,6 +17,5 @@ else
     rm /opt/change_neo4j_pw.exp
 fi
 
-# Exécution interactive
 exec zsh
 
