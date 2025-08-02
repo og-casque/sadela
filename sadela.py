@@ -49,13 +49,12 @@ def run_container(container_name, shared_dir=None):
             print(f"➕ Creating new container '{container_name}'...")
             subprocess.run(["xhost", "+local:docker"], check=False)
 
+            volumes_to_mount = {'/tmp/.X11-unix': {'bind': '/tmp/.X11-unix', 'mode': 'rw'},
+                '/etc/localtime': {'bind': '/etc/localtime', 'mode': 'ro'}}
+
             if shared_dir:
                 abs_path = os.path.abspath(shared_dir)
-                volumes_to_mount = {abs_path: {'bind': '/workspace', 'mode': 'rw'},
-                '/tmp/.X11-unix': {'bind': '/tmp/.X11-unix', 'mode': 'rw'}}
-
-            else:
-                volumes_to_mount = {'/tmp/.X11-unix': {'bind': '/tmp/.X11-unix', 'mode': 'rw'}}
+                volumes_to_mount[abs_path] = {'bind': '/workspace', 'mode': 'rw'}
 
             container = client.containers.create(
                 image=IMAGE_NAME,
