@@ -37,4 +37,5 @@ faketime
 krb5-user
 inetutils-ping
 dnsutils
+rustc
 tshark

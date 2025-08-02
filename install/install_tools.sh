@@ -59,6 +59,17 @@ install_go() {
     done
 }
 
+# Fonction pour installer via cargo
+install_cargo() {
+    local file="$1"
+    cat "$file" | while read -r tool || [[ -n "$tool" ]]; do
+        [[ -z "$tool" ]] && continue
+        case "$tool" in \#*) continue ;; esac
+        echo "[CARGO] Installing $tool"
+        cargo install -y "$tool" >> "$LOG_DIR/cargo_install.log" 2>&1 || echo "[!] Failed to install $tool via cargo"
+    done
+}
+
 echo "Installing metasploit"
 
 # Télécharger le script d'installation
@@ -154,6 +165,13 @@ if [ -f /opt/go.txt ]; then
     install_go /opt/go.txt
 else
     echo "[!] /opt/go.txt not found"
+fi
+
+# installation des paquets via cargo
+if [ -f /opt/cargo.txt ]; then
+    install_cargo /opt/cargo.txt
+else
+    echo "[!] /opt/cargo.txt not found"
 fi
 
 echo "Installing bloodhound legacy"
@@ -259,6 +277,12 @@ echo "Getting gMSADumper.py"
 git clone --depth 1 https://github.com/micahvandeusen/gMSADumper.git /opt/gMSADumper
 if [ ! -f /opt/gMSADumper/gMSADumper.py ]; then
     echo "Failed installing gMSADumper.py"
+fi
+
+echo "Getting timeroast.py"
+git clone --depth 1 https://github.com/SecuraBV/Timeroast.git /opt/timeroast
+if [ ! -f /opt/timeroast/timeroast.py ]; then
+    echo "Failed installing timeroast.py"
 fi
 
 echo "Installing nikto"
