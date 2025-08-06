@@ -38,4 +38,6 @@ krb5-user
 inetutils-ping
 dnsutils
 rustc
+gcc
+gdb
 tshark
