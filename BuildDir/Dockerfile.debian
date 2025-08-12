@@ -44,9 +44,7 @@ RUN sed -i 's/^# *en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
 
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
-ENV PATH="/root/.local/bin:${PATH}"
-
-ENV PATH="/usr/sbin:${PATH}"
+ENV PATH="${PATH}:/root/.local/bin:/usr/sbin"
 
 # copying conf files
 COPY conf/tmux.conf /root/.tmux.conf
@@ -65,6 +63,7 @@ COPY install/pipx.txt /opt/pipx.txt
 COPY install/pip.txt /opt/pip.txt
 COPY install/gem.txt /opt/gem.txt
 COPY install/go.txt /opt/go.txt
+COPY install/cargo.txt /opt/cargo.txt
 COPY install/install_tools.sh /opt/install_tools.sh
 COPY install/install_ressources.sh /opt/install_ressources.sh
 
@@ -91,7 +90,11 @@ COPY conf/nxc.conf /root/.nxc/nxc.conf
 # this seems to fix most problems 
 COPY conf/openssl.conf /etc/ssl/openssl.cnf
 
+ENV PATH="${PATH}:/root/.cargo/bin"
+
+
 RUN mkdir -p /workspace
+RUN mkdir -p /shared
 WORKDIR /workspace
 
 # launch with zsh

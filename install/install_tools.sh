@@ -66,9 +66,14 @@ install_cargo() {
         [[ -z "$tool" ]] && continue
         case "$tool" in \#*) continue ;; esac
         echo "[CARGO] Installing $tool"
-        cargo install -y "$tool" >> "$LOG_DIR/cargo_install.log" 2>&1 || echo "[!] Failed to install $tool via cargo"
+        cargo install "$tool" >> "$LOG_DIR/cargo_install.log" 2>&1 || echo "[!] Failed to install $tool via cargo"
     done
 }
+
+apt clean
+rm -rf /var/lib/apt/lists/*
+rm -rf /var/cache/apt/archives/*
+apt update
 
 echo "Installing metasploit"
 
@@ -76,17 +81,17 @@ echo "Installing metasploit"
 curl -s https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb -o msfinstall
 
 # Ajouter la clé GPG manuellement
-curl -fsSL https://apt.metasploit.com/metasploit-framework.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/metasploit.gpg > /dev/null
+curl -fsSL https://apt.metasploit.com/metasploit-framework.gpg.key | gpg --dearmor | tee /usr/share/keyrings/metasploit.gpg > /dev/null
 # Créer le fichier de sources APT avec association de la clé
-echo "deb [signed-by=/usr/share/keyrings/metasploit.gpg] https://downloads.metasploit.com/data/releases/metasploit-framework/apt lucid main" | sudo tee /etc/apt/sources.list.d/metasploit-framework.list
+echo "deb [signed-by=/usr/share/keyrings/metasploit.gpg] https://downloads.metasploit.com/data/releases/metasploit-framework/apt lucid main" | tee /etc/apt/sources.list.d/metasploit-framework.list
 
 # Mise à jour du cache APT
-sudo apt update
+apt update
 
 # Installer Metasploit Framework
 if [ -f msfinstall ]; then
     chmod +x msfinstall
-    sudo ./msfinstall
+    ./msfinstall
     rm msfinstall
 else   
     echo "Failed installing metasploit"

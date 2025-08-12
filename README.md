@@ -8,7 +8,7 @@ First you have to build the image
 
 Then you can create containers 
 
-    ./sadela.py --run --name container_name [--shared-dir /path/to/shared/dir]
+    ./sadela.py --run --name container_name [--work-dir /path/to/workspace/dir] [--shared-dir /path/to/shared/dir]
 
 Start an existing container 
 
@@ -22,16 +22,7 @@ List created containers
 
     ./sadela.py --list
 
-### TODO
-
-- [ ] fix rights for files in shared dir
-- [ ] fix `/etc/hosts` file
-- [ ] fix issues with `bloodhound` crashing unexpectedly
-- [ ] cleaner install for personall wordlists
-- [ ] add a personal ressources option
-- [ ] fix issues with the wrapper (when a container crashes, fix list)
-
 ### Warning
-Only tested on linux.
+This has only been tested on Linux. GUI apps work only in X11-based environments.
 
 This project is in development and some things may not work as expected. Pre installed tools should all work though.

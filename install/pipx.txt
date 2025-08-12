@@ -1,5 +1,5 @@
 certipy-ad
-peepdf
+git+https://github.com/digitalsleuth/peepdf-3.git
 flask-unsign
 git-dumper
 bloodyAD
