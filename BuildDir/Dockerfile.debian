@@ -78,9 +78,6 @@ RUN chmod +x /usr/local/bin/krb5autoconf.sh
 # copying web_exploit_scripts
 RUN mkdir -p /web_exploit_scripts
 
-COPY home_made_scripts/sqli.py /home_made_scripts/sqli.py
-COPY home_made_scripts/le_ascii.py /home_made_scripts/le_ascii.py
-
 # running installation script
 RUN chmod +x /opt/install_tools.sh
 
