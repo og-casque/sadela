@@ -28,12 +28,13 @@ def build_image(dockerfile_path,debug_mode):
 
 def run_container(container_name, work_dir=None, shared_dir=None):
     display = os.getenv("DISPLAY", ":0")
+    sadela_containers = [cont for cont in client.containers.list(all=True) if "sadela" in "".join(cont.image.tags)]
 
     try:
-        if container_name in [cont.name for cont in client.containers.list(all=True) if cont.image.tags[0].split(':')[0] == IMAGE_NAME.split(':')[0]]:
+        if container_name in [cont.name for cont in sadela_containers if cont.image.tags[0].split(':')[0] == IMAGE_NAME.split(':')[0]]:
             container = client.containers.get(container_name)
             if container.status == "exited":
-                print(f"🚀 Running container '{container_name}' from image '{IMAGE_NAME}'...")
+                print(f"🚀 Running container '{container_name}' from image '{container.image.tags[0]}'...")
                 subprocess.run(["xhost", "+local:docker"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 container.start()
                 subprocess.run(["docker", "exec", "-it", container_name, "zsh"])
@@ -84,7 +85,8 @@ def run_container(container_name, work_dir=None, shared_dir=None):
 
 def list_containers():
     print("📋 Listing all containers...")
-    [print(cont.name,f"({cont.status}) :", cont.image.tags[0]) for cont in client.containers.list(all=True) if cont.image.tags[0].split(':')[0]==IMAGE_NAME.split(':')[0]]
+    sadela_containers = [cont for cont in client.containers.list(all=True) if "sadela" in "".join(cont.image.tags)]
+    [print(cont.name,f"({cont.status}) :", cont.image.tags[0]) for cont in sadela_containers if cont.image.tags[0].split(':')[0]==IMAGE_NAME.split(':')[0]]
 
 def delete_container(container_name):
     print(f"Deleting {container_name}...")
