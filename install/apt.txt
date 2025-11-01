@@ -40,4 +40,7 @@ dnsutils
 rustc
 gcc
 gdb
+nodejs
+npm
+libcurl4-openssl-dev
 tshark
