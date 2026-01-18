@@ -306,6 +306,38 @@ else
     /opt/tools-env/bin/pip install -r /opt/jwt_tool/requirements.txt
 fi
 
+echo "Installing chameleon"
+git clone --depth 1 https://github.com/klezVirus/chameleon.git /opt/chameleon
+if [ ! -f /opt/chameleon/chameleon.py ]; then
+    echo "Failed installing chameleon"
+else
+    /opt/tools-env/bin/pip install -r /opt/chameleon/requirements.txt
+fi
+
+echo "Installing routersploit"
+git clone --depth 1 https://github.com/threat9/routersploit.git /opt/routersploit
+if [ ! -f /opt/chameleon/rsf.py ]; then
+    echo "Failed installing routersploit"
+else
+    /opt/tools-env/bin/pip install -r /opt/routersploit/requirements.txt
+fi
+
+echo "Installing ATEAM"
+git clone --depth 1 https://github.com/NetSPI/ATEAM.git /opt/ATEAM
+if [ ! -f /opt/ATEAM/ateam.py ]; then
+    echo "Failed installing ATEAM"
+else
+    /opt/tools-env/bin/pip install -r /opt/ATEAM/requirements.txt
+fi
+
+echo "Installing NetworkHound"
+git clone --depth 1 https://github.com/MorDavid/NetworkHound.git /opt/NetworkHound
+if [ ! -f /opt/NetworkHound/NetworkHound.py ]; then
+    echo "Failed installing NetworkHound"
+else
+    /opt/tools-env/bin/pip install -r /opt/NetworkHound/requirements.txt
+fi
+
 echo "Installing username_generator"
 git clone --depth 1 https://github.com/shroudri/username_generator.git /opt/username_generator
 if [ ! -f /opt/username_generator/username_generator.py ]; then

@@ -28,3 +28,7 @@ acltoolkit-ad
 dploot
 gixy
 krbjack
+git+https://github.com/mrdanielvelez/pyntdsutil
+git+https://github.com/p0dalirius/ShareHound
+evil-winrm-py
+chepy

