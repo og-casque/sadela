@@ -9,3 +9,4 @@ PyYAML
 msldap
 dnslib
 sectools
+xlsxwriter

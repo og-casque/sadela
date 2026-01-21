@@ -32,3 +32,6 @@ git+https://github.com/mrdanielvelez/pyntdsutil
 git+https://github.com/p0dalirius/ShareHound
 evil-winrm-py
 chepy
+wafw00f
+git+https://github.com/brightio/penelope
+git+https://github.com/dadevel/mssql-spider.git@main

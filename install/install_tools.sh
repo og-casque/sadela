@@ -347,6 +347,22 @@ else
     ln -s /opt/username_generator/username_generator.py /usr/local/bin/username_generator
 fi
 
+echo "Installing ntlm_theft"
+git clone --depth 1 https://github.com/Greenwolf/ntlm_theft.git /opt/ntlm_theft
+if [ ! -f /opt/ntlm_theft/ntlm_theft.py ]; then
+    echo "Failed installing ntlm_theft !"
+fi
+
+echo "Installing aced"
+git clone --depth 1 https://github.com/garrettfoster13/aced.git /opt/aced
+if [ ! -f /opt/aced/aced.py ]; then
+    echo "Failed installing aced !"
+else
+    python3 -m /opt/aced/venv
+    /opt/aced/venv/bin/pip install -r /opt/aced/requirements.txt
+    /opt/aced/venv/bin/pip install setuptools
+fi
+
 echo "Installing john the ripper (and its binaries), may take some time"
 git clone --depth 1 https://github.com/openwall/john.git /opt/john
 if [ ! f /opt/john/src/configure ]; then
