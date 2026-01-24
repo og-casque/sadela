@@ -90,3 +90,4 @@ lsassy -d $DOMAIN -u $USER -p $PASSWORD $TARGET
 username_generator -w $NAMESFILE
 routersploit
 aced $DOMAIN/$USER:$PASSWORD@$DC_IP
+pass-station search $PRODUCT

@@ -35,3 +35,5 @@ chepy
 wafw00f
 git+https://github.com/brightio/penelope
 git+https://github.com/dadevel/mssql-spider.git@main
+sslyze
+apachetomcatscanner

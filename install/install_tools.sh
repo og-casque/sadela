@@ -363,6 +363,15 @@ else
     /opt/aced/venv/bin/pip install setuptools
 fi
 
+echo "Installing sccmhunter"
+git clone --depth 1 https://github.com/garrettfoster13/sccmhunter.git /opt/sccmhunter
+if [ ! -f /opt/sccmhunter/sccmhunter.py ]; then
+    echo "Failed installing sccmhunter !"
+else
+    python3 -m /opt/sccmhunter/venv
+    /opt/sccmhunter/venv/bin/pip install -r /opt/sccmhunter/requirements.txt
+fi
+
 echo "Installing john the ripper (and its binaries), may take some time"
 git clone --depth 1 https://github.com/openwall/john.git /opt/john
 if [ ! f /opt/john/src/configure ]; then
