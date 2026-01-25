@@ -2,7 +2,7 @@ FROM debian:12-slim
 
 # installing essentials
 RUN apt update && apt install -y \
-    git jq curl wget vim nano zsh sudo zsh-autosuggestions ruby gnupg \
+    git jq curl wget vim nano zsh sudo zsh-autosuggestions iproute2 ruby gnupg \
     build-essential locales tmux libssl-dev libbz2-dev libreadline-dev \
     libsqlite3-dev libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev \
     libffi-dev liblzma-dev make ca-certificates expect \
