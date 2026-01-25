@@ -38,7 +38,10 @@ krb5-user
 inetutils-ping
 dnsutils
 rustc
+ruby-dev
 gcc
+perl
+binutils
 gdb
 nodejs
 npm

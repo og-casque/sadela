@@ -80,14 +80,6 @@ echo "Installing metasploit"
 # Télécharger le script d'installation
 curl -s https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb -o msfinstall
 
-# Ajouter la clé GPG manuellement
-curl -fsSL https://apt.metasploit.com/metasploit-framework.gpg.key | gpg --dearmor | tee /usr/share/keyrings/metasploit.gpg > /dev/null
-# Créer le fichier de sources APT avec association de la clé
-echo "deb [signed-by=/usr/share/keyrings/metasploit.gpg] https://downloads.metasploit.com/data/releases/metasploit-framework/apt lucid main" | tee /etc/apt/sources.list.d/metasploit-framework.list
-
-# Mise à jour du cache APT
-apt update
-
 # Installer Metasploit Framework
 if [ -f msfinstall ]; then
     chmod +x msfinstall
@@ -316,7 +308,7 @@ fi
 
 echo "Installing routersploit"
 git clone --depth 1 https://github.com/threat9/routersploit.git /opt/routersploit
-if [ ! -f /opt/chameleon/rsf.py ]; then
+if [ ! -f /opt/routersploit/rsf.py ]; then
     echo "Failed installing routersploit"
 else
     /opt/tools-env/bin/pip install -r /opt/routersploit/requirements.txt
@@ -358,7 +350,7 @@ git clone --depth 1 https://github.com/garrettfoster13/aced.git /opt/aced
 if [ ! -f /opt/aced/aced.py ]; then
     echo "Failed installing aced !"
 else
-    python3 -m /opt/aced/venv
+    python3 -m venv /opt/aced/venv
     /opt/aced/venv/bin/pip install -r /opt/aced/requirements.txt
     /opt/aced/venv/bin/pip install setuptools
 fi
@@ -368,13 +360,13 @@ git clone --depth 1 https://github.com/garrettfoster13/sccmhunter.git /opt/sccmh
 if [ ! -f /opt/sccmhunter/sccmhunter.py ]; then
     echo "Failed installing sccmhunter !"
 else
-    python3 -m /opt/sccmhunter/venv
+    python3 -m venv /opt/sccmhunter/venv
     /opt/sccmhunter/venv/bin/pip install -r /opt/sccmhunter/requirements.txt
 fi
 
 echo "Installing john the ripper (and its binaries), may take some time"
 git clone --depth 1 https://github.com/openwall/john.git /opt/john
-if [ ! f /opt/john/src/configure ]; then
+if [ ! -f /opt/john/src/configure ]; then
     echo "Failed installing john :/"
 else
     cd /opt/john/src

