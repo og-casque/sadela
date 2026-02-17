@@ -89,6 +89,8 @@ else
     echo "Failed installing metasploit"
 fi
 
+#cpan install Encoding::BER
+
 echo "Installing jdk11"
 echo "deb http://deb.debian.org/debian unstable main non-free contrib" >> /etc/apt/sources.list
 echo "Package: *\nPin: release a=stable\nPin-Priority: 900\n\nPackage: *\nPin: release a=unstable\nPin-Priority: 50" >> /etc/apt/preferences
@@ -362,6 +364,15 @@ if [ ! -f /opt/sccmhunter/sccmhunter.py ]; then
 else
     python3 -m venv /opt/sccmhunter/venv
     /opt/sccmhunter/venv/bin/pip install -r /opt/sccmhunter/requirements.txt
+fi
+
+echo "Installing viewgen"
+git clone --depth 1 https://github.com/0xacb/viewgen.git /opt/viewgen
+if [ ! -f /opt/viewgen/viewgen ]; then
+    echo "Failed installing viewgen !"
+else
+    python3 -m venv /opt/viewgen/venv
+    /opt/viewgen/venv/bin/pip install -r /opt/viewgen/requirements.txt
 fi
 
 echo "Installing john the ripper (and its binaries), may take some time"

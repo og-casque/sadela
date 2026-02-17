@@ -48,3 +48,5 @@ nodejs
 npm
 libcurl4-openssl-dev
 tshark
+dsniff
+iptables

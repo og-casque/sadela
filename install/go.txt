@@ -5,3 +5,5 @@ github.com/sensepost/gowitness@latest
 github.com/nats-io/natscli/nats@latest
 github.com/jpillora/chisel@latest
 github.com/lkarlslund/ldapnomnom@latest
+github.com/ropnop/kerbrute@latest
+github.com/edoardottt/pphack/cmd/pphack@latest

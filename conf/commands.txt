@@ -91,3 +91,16 @@ username_generator -w $NAMESFILE
 routersploit
 aced $DOMAIN/$USER:$PASSWORD@$DC_IP
 pass-station search $PRODUCT
+enum4linux-ng $IP
+kerbrute userenum --dc $DC_IP -d $DOMAIN $USER_FILE
+badsecrets $SECRET
+badsecrets -c $WORDLIST $SECRET
+badsecrets $VIEWSTATE $VIEWSTATEGENERATOR
+viewgen --guess $VIEWSTATE
+viewgen -m $VIEWSTATEGENERATOR $VIEWSTATE
+viewgen --check --vkey $VALIDATION_KEY --valg $ALGO -m $VIEWSTATEGENERATOR $VIEWSTATE
+viewgen --check --vkey $VALIDATION_KEY --valg $VALIDATION_ALG --dkey $DECRYPTION_KEY --dalg $DECRYPTION_ALG -m $VIEWSTATEGENERATOR $VIEWSTATE
+viewgen --check --webconfig $WEBCONFIG_FILE -m $VIEWSTATEGENERATOR $VIEWSTATE
+viewgen -c $COMMAND --vkey $VALIDATION_KEY --valg $ALGO -m $VIEWSTATEGENERATOR $VIEWSTATE
+viewgen -c $COMMAND --vkey $VALIDATION_KEY --valg $VALIDATION_ALG --dkey $DECRYPTION_KEY --dalg $DECRYPTION_ALG -m $VIEWSTATEGENERATOR $VIEWSTATE
+viewgen -c $COMMAND --webconfig $WEBCONFIG_FILE -m $VIEWSTATEGENERATOR $VIEWSTATE
