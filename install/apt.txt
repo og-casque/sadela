@@ -18,6 +18,7 @@ tcpdump
 libjpeg-dev
 zlib1g-dev
 tmux
+xclip
 aircrack-ng
 binwalk
 freerdp2-x11
