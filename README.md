@@ -2,38 +2,24 @@
 
 A feature-rich pentesting Docker image based on Debian 12, bundled with a Python CLI wrapper to manage images and containers effortlessly.
 
-The image ships with **100+ pre-installed offensive security tools**, wordlists, privilege-escalation resources, and a pre-configured environment (zsh, tmux, Neo4j, BloodHound…) so you can spin up a ready-to-go pentest lab in seconds.
+The image ships with **100+ pre-installed offensive security tools**, wordlists and privilege-escalation resources so you can spin up a ready-to-go pentest environment in seconds.
 
 ---
 
 ## Table of Contents
 
-- [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [CLI Reference](#cli-reference)
-- [Volume Mounts](#volume-mounts)
-- [Helper Scripts (inside container)](#helper-scripts-inside-container)
 - [Warnings & Limitations](#warnings--limitations)
 
 ---
 
 ## Prerequisites
 
-- **Linux** (tested on X11-based desktop environments)
 - **Docker** (daemon running)
-- **Python 3** with the following packages:
-
-```
-pip install docker rich
-```
-
-or:
-
-```
-pip install -r requirements.txt
-```
+- **Python 3**
 
 - **xhost** (usually part of `xorg` or `x11-xserver-utils`) — required for GUI apps (BloodHound)
 
@@ -41,11 +27,11 @@ pip install -r requirements.txt
 
 ## Installation
 
-Clone the repository:
-
 ```bash
 git clone https://github.com/og-casque/sadela.git
 cd sadela
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -116,23 +102,8 @@ The wrapper detects the container state and starts/attaches automatically.
 | `-s` | `--shared-dir` | Host directory mounted at `/shared` (read-only) |
 | `-i` | `--image` | Image tag (e.g. `v0.3` or full `ghcr.io/…` tag) |
 | `-l` | `--list` | List all tracked containers and images |
-| `-R` | `--rm` | Delete a container (Docker + DB record) |
+| `-R` | `--rm` | Delete a container |
 | `-I` | `--rmi` | Remove an image (requires `-i`; refuses if containers reference it) |
-
----
-
-## Volume Mounts
-
-When creating a container, two optional host directories can be mapped:
-
-| Host path | Container path | Mode | Flag |
-|-----------|---------------|------|------|
-| `--work-dir` | `/workspace` | read-write | `-w` |
-| `--shared-dir` | `/shared` | read-only | `-s` |
-
-> **Note:** `--work-dir` and `--shared-dir` cannot point to the same directory.
-
----
 
 ---
 

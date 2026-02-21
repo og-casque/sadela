@@ -375,6 +375,49 @@ else
     /opt/viewgen/venv/bin/pip install -r /opt/viewgen/requirements.txt
 fi
 
+echo "Installing RelayKng"
+git clone --depth 1 https://github.com/depthsecurity/RelayKing-Depth.git /opt/RelayKing-Depth
+if [ ! -f /opt/RelayKing-Depth/relayking.py ]; then
+    echo "Failed installing RelayKing !"
+else
+    python3 -m venv /opt/RelayKing-Depth/venv
+    /opt/RelayKing-Depth/venv/bin/pip install -r /opt/RelayKing-Depth/requirements.txt
+fi
+
+echo "Installing searchsploit"
+git clone --depth 1 https://gitlab.com/exploit-database/exploitdb.git /opt/exploitdb
+if [ ! -f /opt/exploitdb/searchsploit ]; then
+    echo "Failed installing searchsploit !"
+else
+    ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
+fi
+
+echo "Installing cmloot"
+git clone --depth 1 https://github.com/shelltrail/cmloot.git /opt/cmloot
+if [ ! -f /opt/cmloot/cmloot.py ]; then
+    echo "Failed installing cmloot !"
+else
+    python3 -m venv /opt/cmloot/venv
+    /opt/cmloot/venv/bin/pip install -r /opt/cmloot/requirements.txt
+fi
+
+echo "Installing keycred (and pfxloot)"
+git clone --depth 1 https://github.com/RedTeamPentesting/keycred.git /opt/keycred
+if [ ! -f /opt/keycred/LICENSE ]; then
+    echo "Failed installing keycred !"
+else
+    go build /opt/keycred/cmd/keycred
+    go build /opt/keycred/cmd/pfxtool
+fi
+
+echo "Installing pre2k"
+git clone --depth 1 https://github.com/garrettfoster13/pre2k.git /opt/pre2k
+if [ ! -f /opt/pre2k/poetry.lock ]; then
+    echo "Failed installing pre2k !"
+else
+    poetry install --directory /opt/pre2k
+fi
+
 echo "Installing john the ripper (and its binaries), may take some time"
 git clone --depth 1 https://github.com/openwall/john.git /opt/john
 if [ ! -f /opt/john/src/configure ]; then

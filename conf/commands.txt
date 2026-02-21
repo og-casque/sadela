@@ -104,3 +104,15 @@ viewgen --check --webconfig $WEBCONFIG_FILE -m $VIEWSTATEGENERATOR $VIEWSTATE
 viewgen -c $COMMAND --vkey $VALIDATION_KEY --valg $ALGO -m $VIEWSTATEGENERATOR $VIEWSTATE
 viewgen -c $COMMAND --vkey $VALIDATION_KEY --valg $VALIDATION_ALG --dkey $DECRYPTION_KEY --dalg $DECRYPTION_ALG -m $VIEWSTATEGENERATOR $VIEWSTATE
 viewgen -c $COMMAND --webconfig $WEBCONFIG_FILE -m $VIEWSTATEGENERATOR $VIEWSTATE
+cmloot $DOMAIN/$USER:$PASSWORD@IP -findsccmservers
+cmloot $DOMAIN/$USER:$PASSWORD@IP -cmlootinventory sccmfiles.txt
+cmloot $DOMAIN/$USER:$PASSWORD@IP -cmlootdownload sccmfiles.txt
+gpoParser remote -u $USER -p $PASSWORD -d $DOMAIN -s $IP
+gpoParser display
+gpoParser query
+daclsearch dump ${DOMAIN}_aces.db -d $DOMAIN --dc-ip $IP -u $USER -p $PASSWORD
+daclsearch cli ${DOMAIN}_aces.db
+pre2k auth -u $USER -p $PASSWORD -d $DOMAIN -dc-ip $IP
+pre2k unauth -d $DOMAIN -dc-ip $IP -inputfile $TARGETFILE
+mssqlpwner $USER:$PASSWORD@$IP interactive
+mssqlpwner $USER:$PASSWORD@$IP -windows-auth interactive

@@ -104,3 +104,15 @@
 : 171000103:0;viewgen -c $COMMAND --vkey $VALIDATION_KEY --valg $ALGO -m $VIEWSTATEGENERATOR $VIEWSTATE
 : 171000104:0;viewgen -c $COMMAND --vkey $VALIDATION_KEY --valg $VALIDATION_ALG --dkey $DECRYPTION_KEY --dalg $DECRYPTION_ALG -m $VIEWSTATEGENERATOR $VIEWSTATE
 : 171000105:0;viewgen -c $COMMAND --webconfig $WEBCONFIG_FILE -m $VIEWSTATEGENERATOR $VIEWSTATE
+: 171000106:0;cmloot $DOMAIN/$USER:$PASSWORD@IP -findsccmservers
+: 171000107:0;cmloot $DOMAIN/$USER:$PASSWORD@IP -cmlootinventory sccmfiles.txt
+: 171000108:0;cmloot $DOMAIN/$USER:$PASSWORD@IP -cmlootdownload sccmfiles.txt
+: 171000109:0;gpoParser remote -u $USER -p $PASSWORD -d $DOMAIN -s $IP
+: 171000110:0;gpoParser display
+: 171000111:0;gpoParser query
+: 171000112:0;daclsearch dump ${DOMAIN}_aces.db -d $DOMAIN --dc-ip $IP -u $USER -p $PASSWORD
+: 171000113:0;daclsearch cli ${DOMAIN}_aces.db
+: 171000114:0;pre2k auth -u $USER -p $PASSWORD -d $DOMAIN -dc-ip $IP
+: 171000115:0;pre2k unauth -d $DOMAIN -dc-ip $IP -inputfile $TARGETFILE
+: 171000116:0;mssqlpwner $USER:$PASSWORD@$IP interactive
+: 171000117:0;mssqlpwner $USER:$PASSWORD@$IP -windows-auth interactive
