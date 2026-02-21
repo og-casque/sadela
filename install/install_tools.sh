@@ -401,13 +401,13 @@ else
     /opt/cmloot/venv/bin/pip install -r /opt/cmloot/requirements.txt
 fi
 
-echo "Installing keycred (and pfxloot)"
+echo "Installing keycred (and pfxtool)"
 git clone --depth 1 https://github.com/RedTeamPentesting/keycred.git /opt/keycred
 if [ ! -f /opt/keycred/LICENSE ]; then
     echo "Failed installing keycred !"
 else
-    go build /opt/keycred/cmd/keycred
-    go build /opt/keycred/cmd/pfxtool
+    go build -C /opt/keycred/cmd/keycred
+    go build -C /opt/keycred/cmd/pfxtool
 fi
 
 echo "Installing pre2k"

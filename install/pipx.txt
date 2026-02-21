@@ -41,3 +41,4 @@ apachetomcatscanner
 badsecrets
 git+https://github.com/cogiceo/daclsearch
 git+https://github.com/ScorpionesLabs/MSSqlPwner.git
+git+https://github.com/synacktiv/gpoParser

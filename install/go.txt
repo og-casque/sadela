@@ -7,4 +7,3 @@ github.com/jpillora/chisel@latest
 github.com/lkarlslund/ldapnomnom@latest
 github.com/ropnop/kerbrute@latest
 github.com/edoardottt/pphack/cmd/pphack@latest
-git+https://github.com/synacktiv/gpoParser
