@@ -9,6 +9,7 @@ import sqlite3
 import datetime
 from rich.table import Table
 from rich.console import Console
+from rich.progress import Progress, BarColumn, DownloadColumn, TextColumn, TransferSpeedColumn, TimeRemainingColumn
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -218,16 +219,68 @@ def resolve_image_tag(requested_image=None):
 def pull_image(requested_image=None):
     """Pull an image from the registry. requested_image may be full tag or short version (v0.3)."""
     tag = requested_image if requested_image and ":" in requested_image else (f"{IMAGE_NAME.split(':')[0]}:{requested_image}" if requested_image else IMAGE_NAME)
-    print(f"⬇️  Pulling image '{tag}'...")
+    console = Console()
+    console.print(f"⬇️  Pulling image '[bold]{tag}[/bold]'...")
     try:
-        client.images.pull(tag)
+        # layer_id -> task_id mapping for per-layer progress bars
+        layer_tasks = {}
+
+        with Progress(
+            TextColumn("[bold blue]{task.description}"),
+            BarColumn(),
+            DownloadColumn(),
+            TransferSpeedColumn(),
+            TimeRemainingColumn(),
+            console=console,
+            transient=True,
+        ) as progress:
+            for event in client.api.pull(tag, stream=True, decode=True):
+                status = event.get("status", "")
+                layer_id = event.get("id", "")
+                detail = event.get("progressDetail", {})
+                current = detail.get("current", 0)
+                total = detail.get("total", 0)
+
+                if not layer_id:
+                    continue
+
+                if status in ("Pulling fs layer", "Waiting"):
+                    if layer_id not in layer_tasks:
+                        layer_tasks[layer_id] = progress.add_task(
+                            f"[cyan]{layer_id}[/cyan] {status}", total=None
+                        )
+                elif status == "Downloading":
+                    if layer_id not in layer_tasks:
+                        layer_tasks[layer_id] = progress.add_task(
+                            f"[cyan]{layer_id}[/cyan] Downloading", total=total or None
+                        )
+                    progress.update(
+                        layer_tasks[layer_id],
+                        description=f"[cyan]{layer_id}[/cyan] Downloading",
+                        completed=current,
+                        total=total or None,
+                    )
+                elif status == "Pull complete":
+                    if layer_id in layer_tasks:
+                        progress.update(
+                            layer_tasks[layer_id],
+                            description=f"[green]{layer_id}[/green] Pull complete",
+                            completed=total or 1,
+                            total=total or 1,
+                        )
+                elif status == "Already exists":
+                    if layer_id not in layer_tasks:
+                        layer_tasks[layer_id] = progress.add_task(
+                            f"[yellow]{layer_id}[/yellow] Already exists", total=1, completed=1
+                        )
+
         # record in DB (dockerfile_path unknown when pulling)
         add_image_record(tag, None)
-        print("✅ Image pulled and recorded successfully.")
+        console.print("✅ Image pulled and recorded successfully.")
     except docker.errors.APIError as e:
-        print(f"❌ Docker API error while pulling image {tag}:\n", e)
+        console.print(f"❌ Docker API error while pulling image {tag}:\n", e)
     except Exception as e:
-        print(f"❌ Unexpected error during pull:\n", e)
+        console.print(f"❌ Unexpected error during pull:\n", e)
 
 def run_container(container_name, work_dir=None, shared_dir=None, image_tag=None):
     display = os.getenv("DISPLAY", ":0")
