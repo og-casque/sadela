@@ -11,7 +11,7 @@ install_apt() {
         [[ -z "$tool" ]] && continue
         case "$tool" in \#*) continue ;; esac
         echo "[APT] Installing $tool"
-        apt install -y "$tool" >> "$LOG_DIR/apt_install.log" 2>&1 || echo "[!] Failed to install $tool via apt"
+        apt-get install -y "$tool" >> "$LOG_DIR/apt_install.log" 2>&1 || echo "[!] Failed to install $tool via apt"
     done
 }
 
@@ -70,10 +70,10 @@ install_cargo() {
     done
 }
 
-apt clean
+apt-get clean
 rm -rf /var/lib/apt/lists/*
 rm -rf /var/cache/apt/archives/*
-apt update
+apt-get update
 
 echo "Installing metasploit"
 
@@ -92,20 +92,24 @@ fi
 #cpan install Encoding::BER
 
 echo "Installing jdk11"
-echo "deb http://deb.debian.org/debian unstable main non-free contrib" >> /etc/apt/sources.list
-echo "Package: *\nPin: release a=stable\nPin-Priority: 900\n\nPackage: *\nPin: release a=unstable\nPin-Priority: 50" >> /etc/apt/preferences
-apt update 
-apt install -y openjdk-11-jdk
+wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public \
+  | gpg --dearmor -o /usr/share/keyrings/adoptium.gpg
+echo "deb [signed-by=/usr/share/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb bookworm main" \
+  > /etc/apt/sources.list.d/adoptium.list
+apt-get update
+apt-get install -y temurin-11-jdk
 
 echo "Installing neo4j"
 wget -O - https://debian.neo4j.com/neotechnology.gpg.key | apt-key add -
 echo 'deb https://debian.neo4j.com stable 4.4' | tee /etc/apt/sources.list.d/neo4j.list
-apt update -y
-apt install -y apt-transport-https
-apt install -y neo4j
+apt-get update
+apt-get install -y neo4j
 
 echo "Setting up neo4j APOC for gpohound"
 cp /var/lib/neo4j/labs/apoc-* /var/lib/neo4j/plugins/
+
+# Installing rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # installation des paquets via apt
 if [ -f /opt/apt.txt ]; then

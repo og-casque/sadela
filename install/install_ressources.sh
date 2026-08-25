@@ -45,8 +45,6 @@ download "https://github.com/int0x33/nc.exe/raw/refs/heads/master/nc64.exe" /pri
 download 'https://github.com/giuliano108/SeBackupPrivilege/blob/master/SeBackupPrivilegeCmdLets/bin/Debug/SeBackupPrivilegeUtils.dll?raw=true' /privilege_escalation/windows/SeBackupPrivilegeUtils.dll
 download 'https://github.com/giuliano108/SeBackupPrivilege/blob/master/SeBackupPrivilegeCmdLets/bin/Debug/SeBackupPrivilegeCmdLets.dll?raw=true' /privilege_escalation/windows/SeBackupPrivilegeCmdLets.dll
 
-echo "Getting wordlists ressources..."
-git clone --depth 1 https://github.com/og-casque/Wordlists.git /wordlists
 # seclists
 echo "Cloning seclists..."
 git clone --depth 1 https://github.com/danielmiessler/SecLists.git /seclists 
