@@ -432,3 +432,24 @@ else
     cd /
     ln -s /opt/john/run/*2john* /usr/local/bin/
 fi
+
+echo "Installing odat"
+mkdir /opt/odat
+curl -sSL https://github.com/quentinhardy/odat/releases/download/5.1.1/odat-linux-libc2.17-x86_64.tar.gz -o /opt/odat/odat.tar.gz
+if [ ! -f /opt/odat/odat.tar.gz ]; then
+    echo "Failed downloading odat"
+else
+    tar -xf /opt/odat/odat.tar.gz -C /opt/odat
+    if [ ! -f /opt/odat/odat-libc2.17-x86_64/odat-libc2.17-x86_64 ]; then
+        echo "Failed installing odat"
+    fi
+fi
+
+echo "Installing klist2ccache"
+git clone --depth 1 https://github.com/jakeotte/klist2ccache.git /opt/klist2ccache
+if [ ! -f /opt/klist2ccache/requirements.txt ]; then
+    echo "Failed installing klist2ccache"
+else
+    python3 -m venv /opt/klist2ccache/venv
+    /opt/klist2ccache/venv/bin/pip install -r /opt/klist2ccache/requirements.txt
+fi

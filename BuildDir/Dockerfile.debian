@@ -41,6 +41,9 @@ ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 ENV PATH="${PATH}:/root/.local/bin:/usr/sbin"
 
+# Adding cargo's bin directory
+ENV PATH="${PATH}:/root/.cargo/bin"
+
 # copying conf files
 COPY conf/tmux.conf /root/.tmux.conf
 COPY conf/zshrc /root/.zshrc
@@ -78,12 +81,9 @@ RUN chmod +x \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 COPY conf/nxc.conf /root/.nxc/nxc.conf
-# copying modified version of openssl.conf to enable MD4 encryption
+# copying modified version of openssl.conf to enable MD4
 # this seems to fix most problems 
 COPY conf/openssl.conf /etc/ssl/openssl.cnf
-
-ENV PATH="${PATH}:/root/.cargo/bin"
-
 
 RUN mkdir -p /workspace /shared
 WORKDIR /workspace

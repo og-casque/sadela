@@ -41,3 +41,8 @@ badsecrets
 git+https://github.com/cogiceo/daclsearch
 git+https://github.com/ScorpionesLabs/MSSqlPwner.git
 git+https://github.com/synacktiv/gpoParser
+git+https://github.com/synacktiv/dicozorus/
+mycli
+hashid
+unblob
+cewler

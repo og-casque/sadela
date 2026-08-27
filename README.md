@@ -109,6 +109,5 @@ The wrapper detects the container state and starts/attaches automatically.
 
 ## Warnings & Limitations
 
-- **Linux only** — tested on X11-based desktop environments. GUI applications (BloodHound) require X11.
-- **Wayland** is not supported for GUI forwarding; use XWayland or an X11 session.
+- **Linux only** — bloodhound should work on both X11 and Wayland based desktop environments.
 - This project is under active development — some edge cases may not be handled. All pre-installed tools should work out of the box.
