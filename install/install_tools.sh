@@ -125,9 +125,6 @@ else
     echo "[!] /opt/pipx.txt not found"
 fi
 
-echo "Installing pwncat with python 3.11.9"
-pipx install pwncat-cs --python /root/.pyenv/versions/3.11.9/bin/python
-
 echo "Setting default password to 'casque' for gpohound"
 cp -f /opt/neo4j.yaml /root/.local/share/pipx/venvs/gpohound/lib/python3.12/site-packages/config/neo4j.yaml
 
